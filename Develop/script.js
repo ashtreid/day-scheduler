@@ -12,6 +12,30 @@ $(document).ready(function() {
   // function? How can DOM traversal be used to get the "hour-x" id of the
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
+
+  function storeValsOnSave() {
+    $('.saveBtn').on('click', function(event) {
+      event.preventDefault();
+
+      var hourIdKey = $(this).parent().attr('id');
+      var textArea = $(this).siblings('textarea').val();
+      
+      localStorage.setItem(hourIdKey, textArea);
+    });
+
+    $('.time-block').each(function() {
+      var hourIdKey = $(this).attr('id');
+      var textArea = $(this).find('textarea');
+      var storedVal = localStorage.getItem(hourIdKey);
+
+      if (storedVal === null) {
+        return;
+      } else {
+        $(textArea).val(storedVal);
+      }
+    });
+  };
+  
   //
   // TODO: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
@@ -26,4 +50,5 @@ $(document).ready(function() {
   // TODO: Add code to display the current date in the header of the page.
 
   headingTodaysDate();
+  storeValsOnSave();
 });
